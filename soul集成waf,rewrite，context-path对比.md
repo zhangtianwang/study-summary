@@ -1,7 +1,7 @@
 # waf,rewrite和context-path插件对比 #
 # 1 waf,rewrite，context-path插件简单介绍	
 
-1. waf，全称Web Application Firewall，web应用防火墙，用来保护网站安全，当恶意攻击的求，对网站安全构成威胁时，可以启用waf插件，查找到恶意请求，比如通过恶意请求的链接地址，请求头的请求参数，设置状态码500，网关不再转发，直接把请求拦截，放回错误的响应码。
+1. waf，全称Web Application Firewall，web应用防火墙，用来保护网站安全，当恶意攻击的求，对网站安全构成威胁时，可以启用waf插件，查找到恶意请求，比如通过恶意请求的链接地址，请求头的请求参数，设置状态码500，网关不再转发，直接把请求拦截，返回错误的响应码。
 2. rewrite，对请求地址进行重写，比如将 /http/test/**，设置成 /order/findById 这个地址，启用rewrite插件，则所有以http/test开头的地址，网关将其转换成/order/findById这个地址进行转发调用
 3. context-path,插件可以对某些context-path的链接进行拦截过滤，也可以找到实际的地址进行请求。
     		
@@ -60,7 +60,7 @@
   可以看到waf插件就是对做一些安全认证，白名单内的可以直接绕过权限验证，对一些请求可以通过设置拒绝策略和状态码，拒绝执行。
 
 ----------
-# 1.3 rewirte 源码解析 #
+# 3 rewirte plugin 源码解析 #
 rewrite是把请求地址经过网关处理，转成可以直接调用服务接口的地址，来进行调用,执行顺序也比较靠前，我们先看下RewritePlugin的核心方法doExecute方法，方法比较简单，要看是否配置了重定向的地址，如果没有配返回错误，如果配置了，将重写的地址，写到exchage的attribute中。
 	
 @Override
